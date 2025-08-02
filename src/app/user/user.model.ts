@@ -24,6 +24,12 @@ const userSchema = new Schema<IUser>({
         type: String,
         required: true
     },
+    address: {
+        type: String
+    },
+    university: {
+        type: String
+    },
     role: {
         type: String,
         enum: ["student", "admin"],
