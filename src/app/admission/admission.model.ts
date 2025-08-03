@@ -42,9 +42,9 @@ const AdmissionSchema = new Schema<IAdmission>({
         required: true
     },
     reviews: {
-        type: [reviewSchema],
+        type: [Schema.Types.Mixed],
         default: []
-    }
+    },
 }, {
     versionKey: false,
     timestamps: true

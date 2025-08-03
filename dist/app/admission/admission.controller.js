@@ -51,6 +51,46 @@ const createAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
     }
 });
+const getReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const admission = yield admission_model_1.Admission.find()
+            .select("reviews");
+        if (!admission.length) {
+            return res.status(404).json({
+                success: false,
+                message: "No reviews found",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Reviews retrieved successfully",
+            data: admission,
+        });
+    }
+    catch (error) {
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                error: error.message,
+            });
+        }
+        else if (error.code === 11000) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already exists",
+                error: error.keyValue,
+            });
+        }
+        else {
+            return res.status(500).json({
+                success: false,
+                message: "Something went wrong",
+                error: error.message,
+            });
+        }
+    }
+});
 const getMeAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const email = req.params.email;
@@ -93,7 +133,43 @@ const getMeAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
     }
 });
+const addReviewToAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const { email } = req.params;
+        const { rating, comment } = req.body;
+        if (!rating || !comment) {
+            return res.status(400).json({ success: false, message: "Rating and comment are required" });
+        }
+        ;
+        const admission = yield admission_model_1.Admission.findOne({ email });
+        if (!admission) {
+            return res.status(404).json({ success: false, message: "Admission not found" });
+        }
+        ;
+        const newReview = {
+            rating,
+            comment,
+            reviewedAt: new Date(),
+        };
+        admission.reviews = (_a = admission.reviews) !== null && _a !== void 0 ? _a : [];
+        admission.reviews.push(newReview);
+        yield admission.save();
+        return res.status(200).json({
+            success: true,
+            message: "Review added successfully",
+            review: newReview,
+            admissionId: admission._id,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "An error occurred while adding the review", error: error.message });
+    }
+});
 exports.admissionController = {
     createAdmission,
-    getMeAdmission
+    getMeAdmission,
+    addReviewToAdmission,
+    getReview
 };

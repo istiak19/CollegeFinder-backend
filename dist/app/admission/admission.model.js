@@ -42,9 +42,9 @@ const AdmissionSchema = new mongoose_1.Schema({
         required: true
     },
     reviews: {
-        type: [reviewSchema],
+        type: [mongoose_1.Schema.Types.Mixed],
         default: []
-    }
+    },
 }, {
     versionKey: false,
     timestamps: true
