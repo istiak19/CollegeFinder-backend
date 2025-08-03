@@ -14,7 +14,6 @@ const admission_model_1 = require("./admission.model");
 const createAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { candidateName, email, image, phone, address, dob, subject, college } = req.body;
-        // Validate all fields
         if (!candidateName || !email || !image || !phone || !address || !dob || !subject || !college) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
         }
@@ -22,7 +21,7 @@ const createAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function
         if (existingUser) {
             return res.status(200).json({ success: true, message: "User already exists" });
         }
-        // Create new admission entry
+        ;
         const newAdmission = new admission_model_1.Admission({
             candidateName,
             email,
@@ -41,7 +40,6 @@ const createAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
     catch (error) {
-        // Handle different types of errors
         if (error.name === "ValidationError") {
             res.status(400).json({ success: false, message: "Validation failed", error: error.message });
         }
@@ -53,6 +51,49 @@ const createAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
     }
 });
+const getMeAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const email = req.params.email;
+        const admission = yield admission_model_1.Admission.find({ email })
+            .populate("college", "name")
+            .sort({ createdAt: -1 });
+        if (!admission.length) {
+            return res.status(404).json({
+                success: false,
+                message: "No admission found for this email",
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            message: "Admission retrieved successfully",
+            data: admission,
+        });
+    }
+    catch (error) {
+        if (error.name === "ValidationError") {
+            return res.status(400).json({
+                success: false,
+                message: "Validation failed",
+                error: error.message,
+            });
+        }
+        else if (error.code === 11000) {
+            return res.status(400).json({
+                success: false,
+                message: "Email already exists",
+                error: error.keyValue,
+            });
+        }
+        else {
+            return res.status(500).json({
+                success: false,
+                message: "Something went wrong",
+                error: error.message,
+            });
+        }
+    }
+});
 exports.admissionController = {
-    createAdmission
+    createAdmission,
+    getMeAdmission
 };

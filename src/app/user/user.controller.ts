@@ -72,16 +72,12 @@ const updateUserSingle = async (req: Request, res: Response) => {
 
         if (!existingUser) {
             return res.status(404).json({ success: false, message: "User not found" });
-        }
-
-        // Update the fields that were sent in the request body
+        };
         existingUser.name = name || existingUser.name;
         existingUser.photo = photo || existingUser.photo;
         existingUser.phone = phone || existingUser.phone;
         existingUser.university = university || existingUser.university;
         existingUser.address = address || existingUser.address;
-
-        // Save the updated user data
         await existingUser.save();
 
         return res.status(200).json({

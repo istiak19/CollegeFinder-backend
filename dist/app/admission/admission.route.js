@@ -5,4 +5,5 @@ const express_1 = require("express");
 const admission_controller_1 = require("./admission.controller");
 const router = (0, express_1.Router)();
 router.post("/admission", admission_controller_1.admissionController.createAdmission);
+router.get("/admission/:email", admission_controller_1.admissionController.getMeAdmission);
 exports.admissionRoutes = router;

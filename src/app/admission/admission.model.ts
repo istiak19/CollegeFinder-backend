@@ -1,5 +1,11 @@
 import { model, Schema } from "mongoose";
-import { IAdmission } from "./admission.interface";
+import { IAdmission, IReview } from "./admission.interface";
+
+const reviewSchema = new Schema<IReview>({
+    rating: { type: Number, required: true, min: 1, max: 5 },
+    comment: { type: String, required: true },
+    reviewedAt: { type: Date, default: Date.now }
+});
 
 const AdmissionSchema = new Schema<IAdmission>({
     candidateName: {
@@ -32,9 +38,13 @@ const AdmissionSchema = new Schema<IAdmission>({
     },
     college: {
         type: Schema.Types.ObjectId,
-        ref: "College",
+        ref: "college",
         required: true
     },
+    reviews: {
+        type: [reviewSchema],
+        default: []
+    }
 }, {
     versionKey: false,
     timestamps: true

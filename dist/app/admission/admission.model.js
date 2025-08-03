@@ -2,6 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Admission = void 0;
 const mongoose_1 = require("mongoose");
+const reviewSchema = new mongoose_1.Schema({
+    rating: { type: Number, required: true, min: 1, max: 5 },
+    comment: { type: String, required: true },
+    reviewedAt: { type: Date, default: Date.now }
+});
 const AdmissionSchema = new mongoose_1.Schema({
     candidateName: {
         type: String,
@@ -33,9 +38,13 @@ const AdmissionSchema = new mongoose_1.Schema({
     },
     college: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: "College",
+        ref: "college",
         required: true
     },
+    reviews: {
+        type: [reviewSchema],
+        default: []
+    }
 }, {
     versionKey: false,
     timestamps: true
