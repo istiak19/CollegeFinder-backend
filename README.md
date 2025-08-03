@@ -4,7 +4,7 @@
 
 🔗 [Frontend Repo](https://github.com/istiak19/CollegeFinder-frontend)
 🔗 [Backend Repo](https://github.com/istiak19/CollegeFinder-backend)
-🌐 [Live API Base URL](https://college-finder-alpha.vercel.app/api/v1)
+🌐 [Live API Base URL](https://college-finder-alpha.vercel.app/)
 
 ---
 
