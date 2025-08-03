@@ -46,7 +46,7 @@ const createAdmission = async (req: Request, res: Response) => {
 const getReview = async (req: Request, res: Response) => {
     try {
         const admission = await Admission.find()
-            .select("reviews")
+            .select("reviews candidateName college").populate("college", "name")
 
         if (!admission.length) {
             return res.status(404).json({
@@ -168,5 +168,5 @@ export const admissionController = {
     createAdmission,
     getMeAdmission,
     addReviewToAdmission,
-    getReview 
+    getReview
 };

@@ -54,7 +54,7 @@ const createAdmission = (req, res) => __awaiter(void 0, void 0, void 0, function
 const getReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const admission = yield admission_model_1.Admission.find()
-            .select("reviews");
+            .select("reviews candidateName college").populate("college", "name");
         if (!admission.length) {
             return res.status(404).json({
                 success: false,
