@@ -7,6 +7,7 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const user_route_1 = require("./app/user/user.route");
 const college_route_1 = require("./app/college/college.route");
+const admission_route_1 = require("./app/admission/admission.route");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -19,6 +20,7 @@ app.use((0, cors_1.default)({
 }));
 app.use("/api/v1/", user_route_1.userRoutes);
 app.use("/api/v1", college_route_1.collegeRoutes);
+app.use("/api/v1", admission_route_1.admissionRoutes);
 app.get("/", (req, res) => {
     res.send("College finder API is running successfully!");
 });

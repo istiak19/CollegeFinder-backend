@@ -2,6 +2,7 @@ import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import { userRoutes } from "./app/user/user.route";
 import { collegeRoutes } from "./app/college/college.route";
+import { admissionRoutes } from "./app/admission/admission.route";
 
 const app: Application = express();
 
@@ -17,6 +18,7 @@ app.use(cors({
 
 app.use("/api/v1/", userRoutes);
 app.use("/api/v1", collegeRoutes);
+app.use("/api/v1", admissionRoutes);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("College finder API is running successfully!");
